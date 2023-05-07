@@ -23,6 +23,10 @@ def merge_files(path, file_names=None):
         file_paths = [os.path.abspath(os.path.join(path, name)) for name in file_names]
 
     if file_paths:
+        if not os.path.exists('merged_file.txt'):
+            with open('merged_file.txt', 'w') as f:
+                pass
+
         with open('merged_file.txt', 'a', encoding='cp932', errors='replace') as outfile:
             for i, file_path in enumerate(file_paths):
                 with open(file_path, encoding='cp932', errors='replace') as infile:
@@ -36,6 +40,7 @@ def merge_files(path, file_names=None):
             print(f"{path}: [{os.path.abspath('merged_file.txt')}]")
     
     return file_paths
+
 
 
 if __name__ == '__main__':
