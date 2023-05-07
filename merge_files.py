@@ -19,10 +19,13 @@ def merge_files(path, file_names=None):
         # file_namesが指定された場合は、指定されたファイルのみを検索する
         file_paths = [os.path.join(path, name) for name in file_names]
 
-    with open('merged_file.txt', 'w', encoding='cp932', errors='replace') as outfile:
+    with open('merged_file.txt', 'w', encoding='utf-8') as outfile:
         for file_path in file_paths:
-            with open(file_path, encoding='cp932', errors='replace') as infile:
+            with open(file_path, encoding='utf-8') as infile:
+                rel_path = os.path.relpath(file_path, path)
+                outfile.write(f'[{rel_path}]:\n')
                 outfile.write(infile.read())
+                outfile.write('\n')
 
     return file_paths
 
@@ -37,5 +40,4 @@ if __name__ == '__main__':
 
     file_paths = merge_files(args.path, args.file_names)
     for path in file_paths:
-        print(path)
-    print('merged_file.txt')
+        print(f'{path}: {os.path.getsize(path)} bytes')
