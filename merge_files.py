@@ -23,16 +23,19 @@ def merge_files(path, file_names=None):
 
     if file_paths:
         with open('merged_file.txt', 'a', encoding='cp932', errors='replace') as outfile:
-            for file_path in file_paths:
+            for i, file_path in enumerate(file_paths):
                 with open(file_path, encoding='cp932', errors='replace') as infile:
                     rel_path = os.path.relpath(file_path, path)
-                    outfile.write(f'\n\n[{rel_path}]:\n')
+                    if i != 0:
+                        outfile.write('\n\n')
+                    outfile.write(f'[{rel_path}]:\n')
                     outfile.write(infile.read())
 
         for path in file_paths:
             print(f"{path}: [{os.path.join(os.getcwd(), 'merged_file.txt')}]")
     
     return file_paths
+
 
 
 
