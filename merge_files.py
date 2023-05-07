@@ -37,8 +37,6 @@ def merge_files(path, file_names=None):
     return file_paths
 
 
-
-
 if __name__ == '__main__':
     import argparse
 
