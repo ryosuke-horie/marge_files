@@ -5,9 +5,12 @@ def merge_files(path, file_names=None):
     """
     ローカルのパスを受け取り、指定されたファイルの内容を1つにまとめたファイルを作成する関数。
     """
+    file_paths = []
     if file_names is None:
-        # file_namesが指定されていない場合は、ディレクトリ内のすべてのファイルを検索する
-        file_paths = []
+        # ディレクトリ内のファイルがない場合は、終了
+        if not os.listdir(path):
+            return file_paths
+
         for root, dirs, files in os.walk(path):
             if '.git' in dirs:
                 dirs.remove('.git')
@@ -16,17 +19,21 @@ def merge_files(path, file_names=None):
                 if not file_path.startswith(os.path.join(path, '.git')):
                     file_paths.append(file_path)
     else:
-        # file_namesが指定された場合は、指定されたファイルのみを検索する
         file_paths = [os.path.join(path, name) for name in file_names]
 
-    with open('merged_file.txt', 'a', encoding='cp932', errors='replace') as outfile:
-        for file_path in file_paths:
-            with open(file_path, encoding='cp932', errors='replace') as infile:
-                rel_path = os.path.relpath(file_path, path)
-                outfile.write(f'\n\n[{rel_path}]:\n')
-                outfile.write(infile.read())
+    if file_paths:
+        with open('merged_file.txt', 'a', encoding='cp932', errors='replace') as outfile:
+            for file_path in file_paths:
+                with open(file_path, encoding='cp932', errors='replace') as infile:
+                    rel_path = os.path.relpath(file_path, path)
+                    outfile.write(f'\n\n[{rel_path}]:\n')
+                    outfile.write(infile.read())
 
+        for path in file_paths:
+            print(f"{path}: [{os.path.join(os.getcwd(), 'merged_file.txt')}]")
+    
     return file_paths
+
 
 
 if __name__ == '__main__':
