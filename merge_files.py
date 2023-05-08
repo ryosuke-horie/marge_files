@@ -24,12 +24,12 @@ def merge_files(path, file_names=None):
 
     if file_paths:
         if not os.path.exists('merged_file.txt'):
-            with open('merged_file.txt', 'w') as f:
+            with open('merged_file.txt', 'w', encoding='utf-8') as f:
                 pass
 
-        with open('merged_file.txt', 'a', encoding='cp932', errors='replace') as outfile:
+        with open('merged_file.txt', 'a', encoding='utf-8', errors='replace') as outfile:
             for i, file_path in enumerate(file_paths):
-                with open(file_path, encoding='cp932', errors='replace') as infile:
+                with open(file_path, encoding='utf-8', errors='replace') as infile:
                     rel_path = os.path.relpath(file_path, path)
                     if i != 0:
                         outfile.write('\n\n')
